@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Рабочий журнал 3.0</title>
+<style>
+:root{--bg:#f4f6fa;--panel:#fff;--ink:#172033;--muted:#68738a;--line:#e4e8f0;--blue:#315efb;--green:#15803d;--red:#dc2626}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:#111827;color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{font-weight:750;font-size:20px}.sub{color:#b8c2d5;font-size:12px;margin-top:3px}
+main{max-width:1250px;margin:24px auto;padding:0 18px}
+.notice{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;padding:12px 14px;border-radius:12px;margin-bottom:16px;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
+.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+.stat .n{font-size:26px;font-weight:750;margin-top:4px}.label{color:var(--muted);font-size:13px}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:16px}
+h2{font-size:16px;margin:0 0 14px}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+label{font-size:13px;color:var(--muted)}input,select,textarea{font:inherit;border:1px solid #d7deea;border-radius:9px;padding:10px;background:white;color:var(--ink);width:100%}
+textarea{min-height:72px;resize:vertical}.btn{border:0;border-radius:9px;padding:10px 14px;font:inherit;font-weight:650;cursor:pointer;background:var(--blue);color:#fff}.btn.secondary{background:#eef2ff;color:#2c4be5}.btn.danger{background:#fee2e2;color:#991b1b}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.toolbar select,.toolbar input{max-width:220px}
+.task{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:10px;background:#fff}
+.tasktop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.tasktitle{font-weight:700}
+.meta{color:var(--muted);font-size:12px;margin-top:7px;display:flex;gap:10px;flex-wrap:wrap}
+.badge{font-size:11px;font-weight:700;padding:4px 8px;border-radius:99px;background:#eef2ff;color:#3347c7;white-space:nowrap}
+.badge.done{background:#dcfce7;color:#166534}.badge.late{background:#fee2e2;color:#991b1b}
+.taskactions{display:flex;gap:6px;margin-top:10px}.taskactions button{font-size:12px;padding:6px 9px}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}header{padding:16px}}
+</style>
+</head>
+<body>
+<header>
+  <div><div class="brand">Рабочий журнал 3.0</div><div class="sub">Общий журнал команды • прототип интерфейса</div></div>
+  <div id="who" style="font-size:13px;color:#dbe4f4">Сотрудник не выбран</div>
+</header>
+<main>
+  <div class="notice"><b>Прототип:</b> сейчас данные сохраняются в этом браузере. Для совместной работы между компьютерами необходимо подключить Supabase и настроить доступы; не используйте этот демонстрационный вариант для конфиденциальных данных клиентов.</div>
+  <section class="stats">
+    <div class="stat"><div class="label">Всего задач</div><div class="n" id="total">0</div></div>
+    <div class="stat"><div class="label">В работе / новые</div><div class="n" id="active">0</div></div>
+    <div class="stat"><div class="label">Выполнено</div><div class="n" id="done">0</div></div>
+    <div class="stat"><div class="label">Просрочено</div><div class="n" id="late">0</div></div>
+  </section>
+  <div class="layout">
+    <section class="panel">
+      <h2>Добавить задачу</h2>
+      <form id="taskForm">
+        <div class="field"><label for="employee">Сотрудник</label><select id="employee" required>
+          <option>Олег</option><option>Сотрудник 2</option><option>Сотрудник 3</option><option>Сотрудник 4</option><option>Сотрудник 5</option><option>Сотрудник 6</option><option>Сотрудник 7</option><option>Сотрудник 8</option><option>Сотрудник 9</option><option>Сотрудник 10</option>
+        </select></div>
+        <div class="field"><label for="title">Задача</label><input id="title" required maxlength="180" placeholder="Например, подготовить отчет ФУ"></div>
+        <div class="field"><label for="category">Категория</label><select id="category">
+          <option>Отчет финансового управляющего</option><option>Запрос / ответ госоргана</option><option>Ходатайство / процессуальный документ</option><option>Распределение конкурсной массы</option><option>Проверка документов</option><option>Судебное заседание</option><option>Прочее</option>
+        </select></div>
+        <div class="field"><label for="due">Срок</label><input id="due" type="datetime-local"></div>
+        <div class="field"><label for="priority">Приоритет</label><select id="priority"><option>Обычный</option><option>Высокий</option><option>Срочный</option></select></div>
+        <div class="field"><label for="details">Комментарий</label><textarea id="details" placeholder="Дополнительные сведения"></textarea></div>
+        <button class="btn" type="submit">Добавить задачу</button>
+      </form>
+    </section>
+    <section class="panel">
+      <h2>Общий список задач</h2>
+      <div class="toolbar">
+        <input id="search" placeholder="Поиск по задачам…">
+        <select id="filterEmployee"><option value="">Все сотрудники</option></select>
+        <select id="filterStatus"><option value="">Все статусы</option><option>Новая</option><option>В работе</option><option>Выполнена</option></select>
+        <select id="filterCategory"><option value="">Все категории</option><option>Отчет финансового управляющего</option><option>Запрос / ответ госоргана</option><option>Ходатайство / процессуальный документ</option><option>Распределение конкурсной массы</option><option>Проверка документов</option><option>Судебное заседание</option><option>Прочее</option></select>
+      </div>
+      <div id="tasks"></div>
+    </section>
+  </div>
+</main>
+<script>
+const employees=[...document.querySelector('#employee').options].map(o=>o.value);
+const $=id=>document.getElementById(id);
+let tasks=JSON.parse(localStorage.getItem('wj3_tasks')||'[]');
+function save(){localStorage.setItem('wj3_tasks',JSON.stringify(tasks));render()}
+function dateText(v){if(!v)return 'Срок не указан';const d=new Date(v);return d.toLocaleString('ru-RU',{dateStyle:'short',timeStyle:'short'})}
+function isLate(t){return t.status!=='Выполнена'&&t.due&&new Date(t.due)<new Date()}
+function render(){
+  $('total').textContent=tasks.length;$('active').textContent=tasks.filter(t=>t.status!=='Выполнена').length;
+  $('done').textContent=tasks.filter(t=>t.status==='Выполнена').length;$('late').textContent=tasks.filter(isLate).length;
+  const selected=$('filterEmployee').value;
+  $('filterEmployee').innerHTML='<option value="">Все сотрудники</option>'+employees.map(e=>`<option ${e===selected?'selected':''}>${e}</option>`).join('');
+  const q=$('search').value.toLowerCase(),st=$('filterStatus').value,cat=$('filterCategory').value,emp=$('filterEmployee').value;
+  const list=tasks.filter(t=>(!q||(t.title+' '+t.details+' '+t.employee).toLowerCase().includes(q))&&(!st||t.status===st)&&(!cat||t.category===cat)&&(!emp||t.employee===emp)).sort((a,b)=>(a.due||'9999').localeCompare(b.due||'9999'));
+  $('tasks').innerHTML=list.length?list.map(t=>`<article class="task">
+    <div class="tasktop"><div><div class="tasktitle">${esc(t.title)}</div><div class="meta"><span>${esc(t.employee)}</span><span>${esc(t.category)}</span><span>Срок: ${dateText(t.due)}</span><span>Приоритет: ${esc(t.priority)}</span></div>${t.details?`<div style="margin-top:8px;font-size:13px">${esc(t.details)}</div>`:''}</div>
+    <span class="badge ${t.status==='Выполнена'?'done':isLate(t)?'late':''}">${isLate(t)?'Просрочена':t.status}</span></div>
+    <div class="taskactions"><button class="btn secondary" onclick="cycle('${t.id}')">${t.status==='Новая'?'В работу':t.status==='В работе'?'Завершить':'Вернуть в работу'}</button><button class="btn secondary" onclick="editTask('${t.id}')">Изменить</button><button class="btn danger" onclick="removeTask('${t.id}')">Удалить</button></div>
+  </article>`).join(''):'<div class="empty">Задач пока нет. Добавьте первую задачу слева.</div>';
+  $('who').textContent='Командный режим • '+$('employee').value;
+}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('taskForm').addEventListener('submit',e=>{e.preventDefault();tasks.push({id:crypto.randomUUID(),employee:$('employee').value,title:$('title').value.trim(),category:$('category').value,due:$('due').value,priority:$('priority').value,details:$('details').value,status:'Новая',created:new Date().toISOString()});e.target.reset();save()});
+function cycle(id){const t=tasks.find(x=>x.id===id);t.status=t.status==='Новая'?'В работе':t.status==='В работе'?'Выполнена':'В работе';save()}
+function removeTask(id){if(confirm('Удалить задачу?')){tasks=tasks.filter(t=>t.id!==id);save()}}
+function editTask(id){const t=tasks.find(x=>x.id===id);const title=prompt('Название задачи:',t.title);if(title===null)return;t.title=title.trim()||t.title;const details=prompt('Комментарий:',t.details||'');if(details!==null)t.details=details;save()}
+['search','filterEmployee','filterStatus','filterCategory','employee'].forEach(id=>$(id).addEventListener('input',render));
+render();
+</script>
+</body>
+</html>
